@@ -23,27 +23,27 @@ it ('should be able to create new group', function () {
 });
 
 # Region: Validation
-it ('name should be required', function () {
+test ('name should be required', function () {
     livewire(Create::class)
         ->call('save')
         ->assertHasErrors(['name' => 'required']);
 });
 
-it ('name should have a min of 3 characters', function () {
+test ('name should have a min of 3 characters', function () {
     livewire(Create::class)
         ->set('name', 'ab')
         ->call('save')
         ->assertHasErrors(['name' => 'min']);
 });
 
-it ('name should have a max of 30 characters', function () {
+test ('name should have a max of 30 characters', function () {
     livewire(Create::class)
         ->set('name', str_repeat('a', 31))
         ->call('save')
         ->assertHasErrors(['name' => 'max']);
 });
 
-it ('name should be unique', function () {
+test ('name should be unique', function () {
     Group::factory()->create(['name' => 'Test Group']);
 
     livewire(Create::class)
