@@ -12,4 +12,10 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::view('group', 'group')
+        ->name('group');
+});
+
 require __DIR__.'/auth.php';

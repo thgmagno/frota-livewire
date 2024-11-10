@@ -47,11 +47,6 @@ class User extends Authenticatable
         ];
     }
 
-    // public function dailyScores(): HasMany
-    // {
-    //     return $this->hasMany(DailyScore::class);
-    // }
-
     public function groups(): HasMany
     {
         return $this->hasMany(Group::class);

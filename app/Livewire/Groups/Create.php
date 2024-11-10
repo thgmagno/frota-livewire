@@ -30,6 +30,11 @@ class Create extends Component
             'name' => $validated['name'],
         ]);
 
+        $this->reset('name');
+
+        session()->flash('success', 'Grupo criado com sucesso');
+
         $this->dispatch('group::refresh-list');
     }
+
 }
