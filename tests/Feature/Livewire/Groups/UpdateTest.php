@@ -7,31 +7,30 @@ use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
-    $user = User::factory()->create();
+    $this->user = User::factory()->create();
+    $this->group = Group::factory()->create([
+        'user_id' => $this->user->id,
+        'name' => 'Old Group',
+    ]);
 
-    actingAs($user);
+    actingAs($this->user);
 });
 
 test ('should be able to update a group name', function () {
-    $group = Group::factory()->create([
-        'user_id' => auth()->id(),
-        'name' => 'Old Group',
-    ]);
+    $group = $this->group;
 
     livewire(Update::class, ['group' => $group])
         ->set('name', 'New Group')
         ->call('save')
-        ->assertHasNoErrors();
+        ->assertHasNoErrors()
+        ->assertDispatched('group::refresh-list');
 
     expect($group->refresh()->name)->toBe('New Group');
 });
 
 # Region: Validation
 test ('name should be required', function () {
-    $group = Group::factory()->create([
-        'user_id' => auth()->id(),
-        'name' => 'Old Group',
-    ]);
+    $group = $this->group;
 
     livewire(Update::class, ['group' => $group])
         ->set('name', '')
@@ -40,10 +39,7 @@ test ('name should be required', function () {
 });
 
 test ('name should have a min of 3 characters', function () {
-    $group = Group::factory()->create([
-        'user_id' => auth()->id(),
-        'name' => 'Old Group',
-    ]);
+    $group = $this->group;
 
     livewire(Update::class, ['group' => $group])
         ->set('name', 'ab')
@@ -52,10 +48,7 @@ test ('name should have a min of 3 characters', function () {
 });
 
 test ('name should have a max of 30 characters', function () {
-    $group = Group::factory()->create([
-        'user_id' => auth()->id(),
-        'name' => 'Old Group',
-    ]);
+    $group = $this->group;
 
     livewire(Update::class, ['group' => $group])
         ->set('name', str_repeat('a', 31))
@@ -65,14 +58,11 @@ test ('name should have a max of 30 characters', function () {
 
 test ('name should be unique', function () {
     Group::factory()->create([
-        'user_id' => auth()->id(),
+        'user_id' => $this->user->id,
         'name' => 'Test Group',
     ]);
 
-    $group = Group::factory()->create([
-        'user_id' => auth()->id(),
-        'name' => 'Old Group',
-    ]);
+    $group = $this->group;
 
     livewire(Update::class, ['group' => $group])
         ->set('name', 'Test Group')

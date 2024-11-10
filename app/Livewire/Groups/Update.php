@@ -50,6 +50,6 @@ class Update extends Component
 
         $this->group->update($validated);
 
-        $this->reset('name');
+        $this->dispatch('group::refresh-list');
     }
 }

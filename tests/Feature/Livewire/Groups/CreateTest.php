@@ -17,7 +17,8 @@ test ('should be able to create new group', function () {
     livewire(Create::class)
         ->set('name', 'Test Group')
         ->call('save')
-        ->assertHasNoErrors();
+        ->assertHasNoErrors()
+        ->assertDispatched('group::refresh-list');
 
     assertDatabaseCount(Group::class, 1);
 });

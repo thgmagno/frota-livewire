@@ -18,7 +18,9 @@ test ('should delete the group', function () {
         'user_id' => auth()->id(),
     ]);
 
-    livewire(Destroy::class, ['group' => $group])->call('destroy');
+    livewire(Destroy::class, ['group' => $group])
+        ->call('destroy')
+        ->assertDispatched('group::refresh-list');
 
     assertDatabaseCount(Group::class, 0);
 });

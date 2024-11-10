@@ -30,6 +30,6 @@ class Create extends Component
             'name' => $validated['name'],
         ]);
 
-        $this->reset('name');
+        $this->dispatch('group::refresh-list');
     }
 }
