@@ -13,7 +13,7 @@ beforeEach(function () {
     actingAs($user);
 });
 
-it ('should be able to create new group', function () {
+test ('should be able to create new group', function () {
     livewire(Create::class)
         ->set('name', 'Test Group')
         ->call('save')
